@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="A private letter gate with a few gentle memory questions."
+    />
+    <title>给你的信</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page-shell" aria-live="polite">
+      <section class="phone-stage" id="app"></section>
+    </main>
+
+    <template id="intro-template">
+      <div class="screen screen-intro">
+        <div class="top-copy">
+          <p class="quiet-line">有些话，想认真对你说</p>
+          <h1>给你的信</h1>
+          <p class="lead">
+            先回答几个只有我们知道的小问题，然后这封信就会打开。
+          </p>
+        </div>
+
+        <div class="envelope-scene" aria-hidden="true">
+          <div class="envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-body"></div>
+            <div class="seal"></div>
+            <div class="flower-stem"></div>
+            <div class="flower flower-a"></div>
+            <div class="flower flower-b"></div>
+          </div>
+        </div>
+
+        <button class="primary-button" data-action="start">开始回答</button>
+      </div>
+    </template>
+
+    <template id="quiz-template">
+      <div class="screen screen-quiz">
+        <button class="icon-button" data-action="back" aria-label="回到开头">
+          <span aria-hidden="true">‹</span>
+        </button>
+        <div class="progress-dots" data-progress></div>
+
+        <div class="question-block">
+          <p class="question-count" data-question-count></p>
+          <h2 data-question-title></h2>
+          <p class="hint-copy" data-hint-copy></p>
+        </div>
+
+        <div class="answers" data-answers></div>
+        <p class="feedback" data-feedback></p>
+      </div>
+    </template>
+
+    <template id="unlocked-template">
+      <div class="screen screen-unlocked">
+        <div class="success-copy">
+          <p class="quiet-line">全部答对啦</p>
+          <h2>信封已经解锁</h2>
+          <p>
+            谢谢你记得这些小事。现在，轮到我把藏了很久的话交给你。
+          </p>
+        </div>
+
+        <div class="unlocked-envelope" aria-hidden="true">
+          <div class="letter-peek"></div>
+          <div class="envelope">
+            <div class="envelope-flap open"></div>
+            <div class="envelope-body"></div>
+            <div class="seal"></div>
+          </div>
+        </div>
+
+        <button class="primary-button" data-action="open-letter">打开信封</button>
+      </div>
+    </template>
+
+    <template id="letter-template">
+      <div class="screen screen-letter">
+        <button class="icon-button" data-action="restart" aria-label="重新开始">
+          <span aria-hidden="true">‹</span>
+        </button>
+
+        <article class="letter-card">
+          <p class="quiet-line">给你的信</p>
+          <h2>我喜欢你</h2>
+          <div class="letter-body" data-letter-body></div>
+          <p class="signature">一直在你身边的人</p>
+        </article>
+      </div>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

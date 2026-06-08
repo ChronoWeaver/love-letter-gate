@@ -168,7 +168,7 @@ function renderQuestion(index) {
   const screen = cloneTemplate("quiz-template");
   const answers = screen.querySelector("[data-answers]");
   const feedback = screen.querySelector("[data-feedback]");
-  const submitButton = screen.querySelector("[data-action='submit-multi']");
+  const submitButton = screen.querySelector("[data-action='submit-answer']");
 
   hydrateProgress(screen, index + 1, `${index + 1}/${totalQuestions}`);
   screen.querySelector("[data-question-count]").textContent = `QUESTION ${index + 1}`;
@@ -183,28 +183,37 @@ function renderQuestion(index) {
     button.addEventListener("click", () => {
       if (locked) return;
       if (question.type === "multi") {
-        toggleMultiAnswer(button, answerIndex);
-        feedback.textContent = "选择好以后，点确认答案。";
-        return;
+        toggleMultiAnswer(answers, button, answerIndex);
+      } else {
+        selectSingleAnswer(answers, button, answerIndex);
       }
-
-      handleSingleAnswer({ button, answers, feedback, question, answerIndex });
+      feedback.textContent = "选择好以后，点确认答案。";
+      feedback.dataset.state = "";
     });
     answers.append(button);
   });
 
-  if (question.type === "multi") {
-    submitButton.hidden = false;
-    submitButton.addEventListener("click", () => {
-      if (locked) return;
-      handleMultiAnswer({ answers, feedback, question });
-    });
-  }
+  submitButton.addEventListener("click", () => {
+    if (locked) return;
+    handleAnswerSubmit({ answers, feedback, question });
+  });
 
   swapScreen(screen);
 }
 
-function toggleMultiAnswer(button, answerIndex) {
+function selectSingleAnswer(answers, button, answerIndex) {
+  selectedAnswers.clear();
+  answers.querySelectorAll(".answer-button").forEach((answerButton) => {
+    answerButton.classList.remove("is-selected", "is-wrong", "is-correct");
+  });
+  selectedAnswers.add(answerIndex);
+  button.classList.add("is-selected");
+}
+
+function toggleMultiAnswer(answers, button, answerIndex) {
+  answers.querySelectorAll(".answer-button").forEach((answerButton) => {
+    answerButton.classList.remove("is-wrong", "is-correct");
+  });
   if (selectedAnswers.has(answerIndex)) {
     selectedAnswers.delete(answerIndex);
     button.classList.remove("is-selected");
@@ -215,18 +224,7 @@ function toggleMultiAnswer(button, answerIndex) {
   button.classList.add("is-selected");
 }
 
-function handleSingleAnswer({ button, answers, feedback, question, answerIndex }) {
-  if (!isCorrectAnswer(question, [answerIndex])) {
-    markWrong({ answers, feedback, message: question.retry });
-    button.classList.add("is-wrong");
-    window.setTimeout(() => button.classList.remove("is-wrong"), 520);
-    return;
-  }
-
-  markCorrect({ selectedButtons: [button], feedback, message: question.success });
-}
-
-function handleMultiAnswer({ answers, feedback, question }) {
+function handleAnswerSubmit({ answers, feedback, question }) {
   if (selectedAnswers.size === 0) {
     markWrong({ answers, feedback, message: "先选一个答案，再确认吧。" });
     return;
@@ -234,6 +232,9 @@ function handleMultiAnswer({ answers, feedback, question }) {
 
   const selected = [...selectedAnswers].sort((a, b) => a - b);
   if (!isCorrectAnswer(question, selected)) {
+    answers.querySelectorAll(".answer-button.is-selected").forEach((button) => {
+      button.classList.add("is-wrong");
+    });
     markWrong({ answers, feedback, message: question.retry });
     return;
   }

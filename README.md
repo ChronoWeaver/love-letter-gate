@@ -7,6 +7,7 @@
 - `index.html`: 页面结构
 - `styles.css`: 视觉样式、信封、动画和响应式布局
 - `app.js`: 题目、答案、提示语和表白信正文
+- `questions.md`: 正式题库、答案规则和测试呈现要求
 - `assets/paper-background.png`: 页面背景资产
 - `design/concept.png`: 初始视觉概念图
 

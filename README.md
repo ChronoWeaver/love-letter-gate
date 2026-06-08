@@ -5,11 +5,12 @@
 ## 项目结构
 
 - `index.html`: 页面结构
-- `styles.css`: 视觉样式、信封、动画和响应式布局
+- `styles.css`: 像素风视觉样式、答题动画和响应式布局
 - `app.js`: 题目、答案、提示语和表白信正文
 - `questions.md`: 正式题库、答案规则和测试呈现要求
-- `assets/paper-background.png`: 页面背景资产
+- `assets/paper-background.png`: 早期纸质背景资产，当前像素风版本未使用
 - `design/concept.png`: 初始视觉概念图
+- `design/pixel-concept.png`: 像素风改版概念图
 
 ## 修改内容
 

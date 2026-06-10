@@ -270,8 +270,11 @@ function renderQuestion(index) {
   });
 
   submitButton.addEventListener("click", () => {
-    if (locked) return;
-    handleAnswerSubmit({ answers, feedback, question });
+    if (locked) {
+      goToNextStep();
+      return;
+    }
+    handleAnswerSubmit({ answers, feedback, question, submitButton, screen });
   });
 
   swapScreen(screen);
@@ -300,7 +303,7 @@ function toggleMultiAnswer(answers, button, answerIndex) {
   button.classList.add("is-selected");
 }
 
-function handleAnswerSubmit({ answers, feedback, question }) {
+function handleAnswerSubmit({ answers, feedback, question, submitButton, screen }) {
   if (selectedAnswers.size === 0) {
     markWrong({ answers, feedback, message: "先选一个答案，再确认吧。" });
     return;
@@ -316,7 +319,7 @@ function handleAnswerSubmit({ answers, feedback, question }) {
   }
 
   const selectedButtons = [...answers.querySelectorAll(".answer-button.is-selected")];
-  markCorrect({ selectedButtons, feedback, message: question.success });
+  markCorrect({ selectedButtons, feedback, message: question.success, submitButton, screen });
 }
 
 function markWrong({ answers, feedback, message }) {
@@ -328,7 +331,7 @@ function markWrong({ answers, feedback, message }) {
   window.setTimeout(() => answers.classList.remove("is-shaking"), 360);
 }
 
-function markCorrect({ selectedButtons, feedback, message }) {
+function markCorrect({ selectedButtons, feedback, message, submitButton, screen }) {
   locked = true;
   selectedButtons.forEach((button) => {
     button.classList.remove("is-selected");
@@ -337,15 +340,21 @@ function markCorrect({ selectedButtons, feedback, message }) {
   feedback.textContent = message;
   feedback.dataset.state = "correct";
 
-  window.setTimeout(() => {
-    const nextIndex = questionIndex + 1;
-    if (nextIndex < questions.length) {
-      renderQuestion(nextIndex);
-      return;
-    }
+  const answeredCount = questionIndex + 1;
+  hydrateProgress(screen, answeredCount, `${answeredCount}/15`);
+  hydrateMemoryPixels(screen, answeredCount);
+  submitButton.textContent = answeredCount < questions.length ? "下一题" : "领取通关密码";
+  submitButton.classList.add("is-ready");
+}
 
-    renderPasscodeReward();
-  }, 980);
+function goToNextStep() {
+  const nextIndex = questionIndex + 1;
+  if (nextIndex < questions.length) {
+    renderQuestion(nextIndex);
+    return;
+  }
+
+  renderPasscodeReward();
 }
 
 function isCorrectAnswer(question, selected) {
@@ -446,6 +455,8 @@ function hydrateProgress(screen, answeredCount, label) {
 }
 
 function hydrateMemoryPixels(screen, litCount) {
+  screen.querySelector(".memory-pixel-field")?.remove();
+
   const field = document.createElement("div");
   field.className = "memory-pixel-field";
   field.setAttribute("aria-hidden", "true");

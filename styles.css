@@ -338,6 +338,10 @@ h2 {
   background: var(--blue);
 }
 
+.secondary-button.is-ready {
+  background: var(--mint);
+}
+
 .primary-button:active,
 .secondary-button:active {
   transform: translateY(4px);

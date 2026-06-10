@@ -80,17 +80,25 @@
           <p>输入四位数字，就可以跳过测试去打开信箱。</p>
 
           <label class="passcode-label" for="passcode-input">四位数字密码</label>
-          <input
-            class="passcode-input"
-            id="passcode-input"
-            data-passcode-input
-            type="text"
-            inputmode="numeric"
-            autocomplete="one-time-code"
-            maxlength="4"
-            pattern="[0-9]*"
-            aria-describedby="passcode-feedback"
-          />
+          <div class="passcode-entry" data-passcode-entry>
+            <div class="passcode-digits" aria-hidden="true">
+              <span class="passcode-digit"></span>
+              <span class="passcode-digit"></span>
+              <span class="passcode-digit"></span>
+              <span class="passcode-digit"></span>
+            </div>
+            <input
+              class="passcode-input"
+              id="passcode-input"
+              data-passcode-input
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              maxlength="4"
+              pattern="[0-9]*"
+              aria-describedby="passcode-feedback"
+            />
+          </div>
 
           <p class="passcode-feedback" id="passcode-feedback" data-passcode-feedback>
             密码藏在测试的终点。

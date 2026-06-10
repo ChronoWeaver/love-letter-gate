@@ -395,45 +395,74 @@ h2 {
   border: 0;
 }
 
-.passcode-input {
+.passcode-entry {
+  position: relative;
   width: min(100%, 286px);
-  height: 76px;
   justify-self: center;
-  padding: 8px 12px 8px 30px;
+}
+
+.passcode-digits {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.passcode-digit {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
   border: var(--pixel-border);
-  border-radius: 0;
-  outline: 0;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      #fff8e9 0 52px,
-      var(--brown-dark) 52px 56px,
-      #fff8e9 56px 68px
-    );
+  background: #fff8e9;
   color: var(--ink);
   font-family: var(--font-pixel);
-  font-size: 42px;
+  font-size: 38px;
   font-weight: 900;
   line-height: 1;
-  letter-spacing: 24px;
-  text-align: center;
-  caret-color: var(--pink-dark);
-  box-shadow: 0 6px 0 rgba(90, 68, 55, 0.16);
+  box-shadow:
+    0 6px 0 rgba(90, 68, 55, 0.16),
+    inset 0 0 0 3px rgba(244, 201, 101, 0.18);
+  transition:
+    border-color 120ms steps(2, end),
+    background-color 120ms steps(2, end);
 }
 
-.passcode-input:focus {
+.passcode-digit.is-active {
   border-color: var(--pink-dark);
+  background: #fff0f2;
 }
 
-.passcode-input.is-wrong {
-  border-color: var(--pink-dark);
-  background-color: #fff0f2;
+.passcode-digit.is-filled {
+  background: #fff4d6;
+}
+
+.passcode-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: transparent;
+  cursor: text;
+  opacity: 0.01;
+  -webkit-text-fill-color: transparent;
+}
+
+.passcode-entry.is-wrong {
   animation: shake 260ms steps(3, end) both;
 }
 
-.passcode-input.is-correct {
+.passcode-entry.is-wrong .passcode-digit {
+  border-color: var(--pink-dark);
+  background: #fff0f2;
+}
+
+.passcode-entry.is-correct .passcode-digit {
   border-color: var(--mint-dark);
-  background-color: #effad9;
+  background: #effad9;
 }
 
 .passcode-feedback {
@@ -789,6 +818,7 @@ h2 {
   min-height: 0;
   padding: 20px 18px;
   overflow: auto;
+  font-weight: 800;
   background:
     repeating-linear-gradient(180deg, rgba(255, 255, 255, 0) 0 30px, rgba(239, 137, 154, 0.12) 30px 32px),
     rgba(255, 254, 250, 0.94);
@@ -798,6 +828,7 @@ h2 {
   margin-top: 8px;
   color: var(--pink-dark);
   font-size: 34px;
+  font-weight: 900;
 }
 
 .letter-body {
@@ -810,6 +841,7 @@ h2 {
   margin: 0;
   color: #5d453d;
   font-size: 17px;
+  font-weight: 800;
   line-height: 1.95;
   animation: line-in 420ms steps(5, end) both;
 }

@@ -170,6 +170,7 @@ function renderPasscode() {
 
   const screen = cloneTemplate("passcode-template");
   const input = screen.querySelector("[data-passcode-input]");
+  const entry = screen.querySelector("[data-passcode-entry]");
   const feedback = screen.querySelector("[data-passcode-feedback]");
   const confirmButton = screen.querySelector("[data-action='confirm-passcode']");
 
@@ -177,19 +178,23 @@ function renderPasscode() {
 
   input.addEventListener("input", () => {
     input.value = input.value.replace(/\D/g, "").slice(0, 4);
-    input.classList.remove("is-wrong");
+    entry.classList.remove("is-wrong", "is-correct");
+    updatePasscodeDigits({ entry, input });
     feedback.textContent = input.value.length === 4 ? "数字填好了，确认一下吧。" : "密码藏在测试的终点。";
     feedback.dataset.state = "";
   });
 
+  input.addEventListener("focus", () => updatePasscodeDigits({ entry, input }));
+  input.addEventListener("blur", () => updatePasscodeDigits({ entry, input, showActive: false }));
+
   input.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
-      confirmPasscode({ input, feedback });
+      confirmPasscode({ entry, input, feedback });
     }
   });
 
   confirmButton.addEventListener("click", () => {
-    confirmPasscode({ input, feedback });
+    confirmPasscode({ entry, input, feedback });
   });
   screen.querySelector("[data-action='back-home']").addEventListener("click", renderIntro);
 
@@ -197,20 +202,29 @@ function renderPasscode() {
   window.setTimeout(() => input.focus(), 180);
 }
 
-function confirmPasscode({ input, feedback }) {
+function updatePasscodeDigits({ entry, input, showActive = document.activeElement === input }) {
+  const digits = entry.querySelectorAll(".passcode-digit");
+  digits.forEach((digit, index) => {
+    digit.textContent = input.value[index] || "";
+    digit.classList.toggle("is-filled", index < input.value.length);
+    digit.classList.toggle("is-active", showActive && index === Math.min(input.value.length, 3));
+  });
+}
+
+function confirmPasscode({ entry, input, feedback }) {
   if (input.value === passcode) {
     feedback.textContent = "密码正确，信箱已经解锁！";
     feedback.dataset.state = "correct";
-    input.classList.remove("is-wrong");
-    input.classList.add("is-correct");
+    entry.classList.remove("is-wrong");
+    entry.classList.add("is-correct");
     locked = true;
     window.setTimeout(renderComplete, 620);
     return;
   }
 
-  input.classList.remove("is-wrong");
-  void input.offsetWidth;
-  input.classList.add("is-wrong");
+  entry.classList.remove("is-wrong");
+  void entry.offsetWidth;
+  entry.classList.add("is-wrong");
   feedback.textContent = input.value.length < 4 ? "要输入完整的四位数字哦。" : "密码不对，再想想。";
   feedback.dataset.state = "wrong";
   input.focus();

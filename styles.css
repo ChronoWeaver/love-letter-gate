@@ -3,6 +3,7 @@
   --cream: #fff9ec;
   --cream-2: #fff1d8;
   --ink: #4b3a36;
+  --button-ink: #3e2e2a;
   --muted: #846f66;
   --brown: #7d604b;
   --brown-dark: #5a4437;
@@ -110,7 +111,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: var(--brown-dark);
+  color: var(--button-ink);
   font-family: var(--font-pixel);
   font-size: 13px;
   font-weight: 800;
@@ -307,7 +308,7 @@ h2 {
   width: 100%;
   min-height: 58px;
   border: var(--pixel-border);
-  color: var(--white);
+  color: var(--button-ink);
   font-size: 18px;
   font-weight: 800;
   letter-spacing: 0;
@@ -320,7 +321,7 @@ h2 {
 
 .primary-button {
   background: var(--mint);
-  text-shadow: 2px 2px 0 rgba(90, 68, 55, 0.22);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.34);
 }
 
 .primary-button.is-pink {
@@ -532,10 +533,10 @@ h2 {
   height: 32px;
   border: 3px solid rgba(90, 68, 55, 0.25);
   background: var(--yellow);
-  color: var(--white);
+  color: var(--button-ink);
   font-family: var(--font-pixel);
   font-weight: 900;
-  text-shadow: 2px 2px 0 rgba(90, 68, 55, 0.2);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.34);
 }
 
 .answer-button:nth-child(2n) .option-key {

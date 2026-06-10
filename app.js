@@ -218,7 +218,7 @@ function confirmPasscode({ entry, input, feedback }) {
     entry.classList.remove("is-wrong");
     entry.classList.add("is-correct");
     locked = true;
-    window.setTimeout(renderComplete, 620);
+    window.setTimeout(() => renderComplete("passcode"), 620);
     return;
   }
 
@@ -243,7 +243,7 @@ function renderQuestion(index) {
   const feedback = screen.querySelector("[data-feedback]");
   const submitButton = screen.querySelector("[data-action='submit-answer']");
 
-  hydrateProgress(screen, index + 1, `${index + 1}/${totalQuestions}`);
+  hydrateProgress(screen, index, `第 ${index + 1}/${totalQuestions} 题`);
   screen.querySelector("[data-question-count]").textContent = `QUESTION ${index + 1}`;
   screen.querySelector("[data-question-title]").textContent = question.title;
   screen.querySelector("[data-question-type]").textContent = question.type === "multi" ? "多选题" : "单选题";
@@ -356,13 +356,21 @@ function renderPasscodeReward() {
   hydrateProgress(screen, totalQuestions, "15/15");
   screen
     .querySelector("[data-action='continue-to-mailbox']")
-    .addEventListener("click", renderComplete);
+    .addEventListener("click", () => renderComplete("quiz"));
   swapScreen(screen);
 }
 
-function renderComplete() {
+function renderComplete(route = "quiz") {
   currentScreen = "complete";
   const screen = cloneTemplate("complete-template");
+  const title = screen.querySelector("[data-complete-title]");
+  const message = screen.querySelector("[data-complete-message]");
+
+  if (route === "passcode") {
+    title.textContent = "通关成功！";
+    message.textContent = "密码正确。现在，有一封小信准备好了。";
+  }
+
   hydrateProgress(screen, totalQuestions, "15/15");
   screen.querySelector("[data-action='open-letter']").addEventListener("click", renderLetter);
   swapScreen(screen);

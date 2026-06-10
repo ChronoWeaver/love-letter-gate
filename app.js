@@ -8,7 +8,7 @@ const questions = [
     type: "single",
     answers: ["郭中方", "Mike", "DuffyFangHug", "方方"],
     correct: [[0]],
-    success: "答对啦！这个名字被你选中，感觉很认真。",
+    success: "从这一题开始，认真模式启动啦。",
     retry: "再想想，是我真正写在名字里的那个。"
   },
   {
@@ -16,7 +16,7 @@ const questions = [
     type: "single",
     answers: ["白羊座", "天蝎座", "狮子座", "双鱼座"],
     correct: [[1]],
-    success: "没错，是天蝎座。观察力加一格。",
+    success: "遇到正确答案了，观察力加一格。",
     retry: "再想想，答案有一点神秘感。"
   },
   {
@@ -24,7 +24,7 @@ const questions = [
     type: "multi",
     answers: ["姐姐", "哥哥", "弟弟", "妹妹"],
     correct: [[0, 2]],
-    success: "答对啦！家庭成员情报收集完成。",
+    success: "见你答对，我偷偷开心了一下。",
     retry: "再想想，是两个选项。"
   },
   {
@@ -32,7 +32,7 @@ const questions = [
     type: "multi",
     answers: ["钢铁侠", "蜘蛛侠", "奇异博士", "绯红女巫", "雷神"],
     correct: [[0, 2]],
-    success: "答对啦！这组合很有科技和魔法感。",
+    success: "你果然记得这些小细节。",
     retry: "再想想，是一位靠盔甲，一位靠魔法。"
   },
   {
@@ -40,7 +40,7 @@ const questions = [
     type: "single",
     answers: ["复联 3", "复联 4", "火星救援", "星际穿越"],
     correct: [[3]],
-    success: "对，是星际穿越。回答正确，进度推进。",
+    success: "那就继续往前走一点点。",
     retry: "再想想，是更宇宙一点的那部。"
   },
   {
@@ -48,7 +48,7 @@ const questions = [
     type: "single",
     answers: ["西瓜", "草莓", "香蕉"],
     correct: [[0]],
-    success: "答对啦！夏天味道的小答案。",
+    success: "天呐，这题也被你答对了。",
     retry: "再想想，是最适合夏天的水果。"
   },
   {
@@ -56,7 +56,7 @@ const questions = [
     type: "single",
     answers: ["表面冷静，内心想很多", "每天都很外向", "什么都不在乎", "想到什么就立刻做什么"],
     correct: [[0]],
-    success: "很懂我嘛。外表冷静，心里其实走了很远。",
+    success: "起飞，进度又亮了一格。",
     retry: "再想想，答案没那么外放。"
   },
   {
@@ -64,7 +64,7 @@ const questions = [
     type: "single",
     answers: ["大城市", "小城市", "看未来发展", "看重要的人在哪里"],
     correct: [[0], [3]],
-    success: "答对啦。城市很重要，重要的人也很重要。",
+    success: "我发现你真的很会猜我。",
     retry: "再想想，答案和机会或重要的人有关。"
   },
   {
@@ -72,7 +72,7 @@ const questions = [
     type: "single",
     answers: ["买房", "买车", "先和重要的人一起规划未来"],
     correct: [[2]],
-    success: "答对啦！比起物品，我更想认真规划未来。",
+    success: "就这样一步一步靠近吧。",
     retry: "再想想，不是先买什么。"
   },
   {
@@ -80,7 +80,7 @@ const questions = [
     type: "single",
     answers: ["真诚", "陪伴", "安全感", "新鲜感", "双方一起变好"],
     correct: [[0], [4]],
-    success: "答对啦。真诚和一起变好，都是很珍贵的事。",
+    success: "慢慢来，不急，但你答对了。",
     retry: "再想想，是更长期、更认真的东西。"
   },
   {
@@ -88,7 +88,7 @@ const questions = [
     type: "single",
     answers: ["更勇敢一点", "更成熟一点", "更值得依靠一点"],
     correct: [[2]],
-    success: "答对啦。我会想成为更值得依靠的人。",
+    success: "慢慢地，秘密快出现了。",
     retry: "再想想，是可以让对方安心的那种。"
   },
   {
@@ -96,7 +96,7 @@ const questions = [
     type: "multi",
     answers: ["有点社恐，怕被周围的人看到", "觉得见面的时机还没到", "觉得自己还没准备好", "因为我太在意这次见面，所以反而小心翼翼"],
     correct: [[0, 1, 2, 3], [1, 2, 3]],
-    success: "答对啦。其实不是不想见，是因为太在意。",
+    success: "喜欢这个答案，也喜欢你答对它。",
     retry: "再想想，答案不止一个，而且都和小心翼翼有关。"
   },
   {
@@ -104,7 +104,7 @@ const questions = [
     type: "multi",
     answers: ["我不知道怎么开口", "我想等一个合适的时机", "因为那件事和你有关"],
     correct: [[1, 2]],
-    success: "答对啦。进度条快满了，答案也快藏不住了。",
+    success: "欢迎来到最后几步。",
     retry: "再想想，关键是时机，也和你有关。"
   },
   {
@@ -112,7 +112,7 @@ const questions = [
     type: "single",
     answers: ["一个无聊测试", "一个玩笑", "一种慢慢靠近你的方式", "一封藏起来的表白信"],
     correct: [[2], [3]],
-    success: "答对啦。你已经快走到真正的问题前了。",
+    success: "你已经快看到真正的信了。",
     retry: "再想想，它不是普通测试。"
   },
   {
@@ -120,7 +120,7 @@ const questions = [
     type: "single",
     answers: ["你觉得我怎么样", "你愿不愿意见我", "你有没有一点喜欢我", "你愿不愿意给我一个机会"],
     correct: [[3]],
-    success: "最后一题答对啦。测试完成，奖励正在打开。",
+    success: "了不起，最后一道也答对了。",
     retry: "再想想，是我最认真、也最想问你的那个问题。"
   }
 ];

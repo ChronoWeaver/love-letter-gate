@@ -63,7 +63,44 @@
           <span class="round-key key-b"></span>
         </div>
 
-        <button class="primary-button" data-action="start">开始测试</button>
+        <div class="intro-actions">
+          <button class="primary-button" data-action="start">开始测试</button>
+          <button class="text-button" data-action="use-passcode">我有通关密码</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="passcode-template">
+      <div class="screen screen-passcode">
+        <div class="progress-slot"></div>
+
+        <section class="passcode-card pixel-card">
+          <p class="label">SECRET CODE</p>
+          <h2>输入通关密码</h2>
+          <p>输入四位数字，就可以跳过测试去打开信箱。</p>
+
+          <label class="passcode-label" for="passcode-input">四位数字密码</label>
+          <input
+            class="passcode-input"
+            id="passcode-input"
+            data-passcode-input
+            type="text"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="4"
+            pattern="[0-9]*"
+            aria-describedby="passcode-feedback"
+          />
+
+          <p class="passcode-feedback" id="passcode-feedback" data-passcode-feedback>
+            密码藏在测试的终点。
+          </p>
+        </section>
+
+        <div class="passcode-actions">
+          <button class="primary-button" data-action="confirm-passcode">确认密码</button>
+          <button class="text-button" data-action="back-home">返回首页</button>
+        </div>
       </div>
     </template>
 
@@ -84,6 +121,33 @@
         <button class="secondary-button" data-action="submit-answer">确认答案</button>
 
         <p class="feedback" data-feedback>选一个答案吧。</p>
+      </div>
+    </template>
+
+    <template id="passcode-reward-template">
+      <div class="screen screen-passcode-reward">
+        <div class="progress-slot"></div>
+
+        <section class="reward-copy">
+          <p class="label">CODE FOUND</p>
+          <h2>获得通关密码！</h2>
+          <p>把它记下来。这是打开最后一封信的小钥匙。</p>
+        </section>
+
+        <div class="passcode-display" aria-label="通关密码 0326">
+          <span>0</span>
+          <span>3</span>
+          <span>2</span>
+          <span>6</span>
+        </div>
+
+        <div class="pixel-key" aria-hidden="true">
+          <span></span>
+        </div>
+
+        <button class="primary-button is-pink" data-action="continue-to-mailbox">
+          去打开信箱
+        </button>
       </div>
     </template>
 

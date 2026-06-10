@@ -1,5 +1,6 @@
 const app = document.querySelector("#app");
 const totalQuestions = 15;
+const passcode = "0326";
 
 const questions = [
   {
@@ -125,11 +126,15 @@ const questions = [
 ];
 
 const letterParagraphs = [
-  "如果你看到这里，就说明这套小测试已经把我藏起来的话，慢慢送到你面前了。",
-  "我其实一直很想见你，也很想认真告诉你：你对我来说，是一个很特别的人。",
-  "我会小心翼翼，是因为我真的在意这件事。在意你怎么想，也在意这一次靠近会不会太突然。",
-  "所以最后，我想把问题说得直接一点：你愿不愿意给我一个机会，让我更认真地走近你？",
-  "不用急着回答。我们可以慢慢聊，像今天这样，一点一点把答案说出来。"
+  "亲爱的梁恒宇先生：",
+  "谢谢你给了我勇气，让我能够在今天向你表白。",
+  "正是因为你每一次都那么坚定地爱我，也愿意一次又一次认真地给我承诺，才让我越来越确定自己的心意。虽然现在的我并不知道这些承诺在未来是否一定都能实现，但你的每一次承诺，都让我更加坚定地相信我对你的爱。",
+  "也许今天并不是最完美的表白时机，因为对我来说，准备得还不够充分。但我知道，今天的我，已经做好了向你表达心意的准备。",
+  "谢谢你每一次对我的照顾，陪我看我喜欢的电影，玩我喜欢的桌游，也愿意和我一起体验我买的游戏。谢谢你每一次温柔的问候，每天晚上的晚安，路上担心我的安全，也在意我会不会不开心。也谢谢你每一次对我的肯定，夸我好看，夸我有魅力，也让我感受到你真诚的欣赏。",
+  "今天，2026年6月10日，我想认真地告诉你：其实，我也一直喜欢着你。",
+  "所以，我想正式地和你在一起，我的宝宝。",
+  "我爱你！",
+  "署名：郭中方"
 ];
 
 const optionLetters = ["A", "B", "C", "D", "E"];
@@ -154,8 +159,62 @@ function renderIntro() {
   screen.querySelector("[data-action='start']").addEventListener("click", () => {
     renderQuestion(0);
   });
+  screen.querySelector("[data-action='use-passcode']").addEventListener("click", renderPasscode);
 
   swapScreen(screen);
+}
+
+function renderPasscode() {
+  currentScreen = "passcode";
+  locked = false;
+
+  const screen = cloneTemplate("passcode-template");
+  const input = screen.querySelector("[data-passcode-input]");
+  const feedback = screen.querySelector("[data-passcode-feedback]");
+  const confirmButton = screen.querySelector("[data-action='confirm-passcode']");
+
+  hydrateProgress(screen, 0, "CODE");
+
+  input.addEventListener("input", () => {
+    input.value = input.value.replace(/\D/g, "").slice(0, 4);
+    input.classList.remove("is-wrong");
+    feedback.textContent = input.value.length === 4 ? "数字填好了，确认一下吧。" : "密码藏在测试的终点。";
+    feedback.dataset.state = "";
+  });
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      confirmPasscode({ input, feedback });
+    }
+  });
+
+  confirmButton.addEventListener("click", () => {
+    confirmPasscode({ input, feedback });
+  });
+  screen.querySelector("[data-action='back-home']").addEventListener("click", renderIntro);
+
+  swapScreen(screen);
+  window.setTimeout(() => input.focus(), 180);
+}
+
+function confirmPasscode({ input, feedback }) {
+  if (input.value === passcode) {
+    feedback.textContent = "密码正确，信箱已经解锁！";
+    feedback.dataset.state = "correct";
+    input.classList.remove("is-wrong");
+    input.classList.add("is-correct");
+    locked = true;
+    window.setTimeout(renderComplete, 620);
+    return;
+  }
+
+  input.classList.remove("is-wrong");
+  void input.offsetWidth;
+  input.classList.add("is-wrong");
+  feedback.textContent = input.value.length < 4 ? "要输入完整的四位数字哦。" : "密码不对，再想想。";
+  feedback.dataset.state = "wrong";
+  input.focus();
+  input.select();
 }
 
 function renderQuestion(index) {
@@ -268,13 +327,23 @@ function markCorrect({ selectedButtons, feedback, message }) {
       return;
     }
 
-    renderComplete();
+    renderPasscodeReward();
   }, 980);
 }
 
 function isCorrectAnswer(question, selected) {
   const normalized = selected.join(",");
   return question.correct.some((answerSet) => answerSet.join(",") === normalized);
+}
+
+function renderPasscodeReward() {
+  currentScreen = "passcode-reward";
+  const screen = cloneTemplate("passcode-reward-template");
+  hydrateProgress(screen, totalQuestions, "15/15");
+  screen
+    .querySelector("[data-action='continue-to-mailbox']")
+    .addEventListener("click", renderComplete);
+  swapScreen(screen);
 }
 
 function renderComplete() {

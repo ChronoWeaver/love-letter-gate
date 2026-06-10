@@ -156,6 +156,7 @@ function renderIntro() {
 
   const screen = cloneTemplate("intro-template");
   hydrateProgress(screen, 0, "READY");
+  hydrateMemoryPixels(screen, 0);
   screen.querySelector("[data-action='start']").addEventListener("click", () => {
     renderQuestion(0);
   });
@@ -175,6 +176,7 @@ function renderPasscode() {
   const confirmButton = screen.querySelector("[data-action='confirm-passcode']");
 
   hydrateProgress(screen, 0, "CODE");
+  hydrateMemoryPixels(screen, 0);
 
   input.addEventListener("input", () => {
     input.value = input.value.replace(/\D/g, "").slice(0, 4);
@@ -244,6 +246,7 @@ function renderQuestion(index) {
   const submitButton = screen.querySelector("[data-action='submit-answer']");
 
   hydrateProgress(screen, index, `第 ${index + 1}/${totalQuestions} 题`);
+  hydrateMemoryPixels(screen, index);
   screen.querySelector("[data-question-count]").textContent = `QUESTION ${index + 1}`;
   screen.querySelector("[data-question-title]").textContent = question.title;
   screen.querySelector("[data-question-type]").textContent = question.type === "multi" ? "多选题" : "单选题";
@@ -380,6 +383,8 @@ function renderLetter() {
   currentScreen = "letter";
   const screen = cloneTemplate("letter-template");
   const letterBody = screen.querySelector("[data-letter-body]");
+  const letterCard = screen.querySelector(".letter-card");
+  const surprise = screen.querySelector("[data-day-41-surprise]");
 
   hydrateProgress(screen, totalQuestions, "CLEAR");
 
@@ -388,6 +393,24 @@ function renderLetter() {
     item.textContent = paragraph;
     item.style.animationDelay = `${index * 140}ms`;
     letterBody.append(item);
+  });
+
+  let revealTimer = null;
+  letterCard.addEventListener("scroll", () => {
+    const remaining = letterCard.scrollHeight - letterCard.scrollTop - letterCard.clientHeight;
+
+    if (remaining <= 12 && !surprise.classList.contains("is-visible") && !revealTimer) {
+      revealTimer = window.setTimeout(() => {
+        surprise.classList.add("is-visible");
+        surprise.setAttribute("aria-hidden", "false");
+      }, 720);
+      return;
+    }
+
+    if (remaining > 48 && revealTimer) {
+      window.clearTimeout(revealTimer);
+      revealTimer = null;
+    }
   });
 
   screen.querySelector("[data-action='restart']").addEventListener("click", renderIntro);
@@ -403,11 +426,38 @@ function hydrateProgress(screen, answeredCount, label) {
   const percent = Math.round((answeredCount / totalQuestions) * 100);
   const count = screen.querySelector("[data-progress-count]");
   const bar = screen.querySelector("[data-progress-bar]");
-  const fill = screen.querySelector("[data-progress-fill]");
+  const segments = screen.querySelector("[data-progress-segments]");
 
   if (count) count.textContent = label;
   if (bar) bar.setAttribute("aria-valuenow", String(answeredCount));
-  if (fill) fill.style.width = `${percent}%`;
+  if (segments) {
+    const activeSegments = Math.round((percent / 100) * 40);
+    const fragment = document.createDocumentFragment();
+
+    for (let index = 0; index < 40; index += 1) {
+      const segment = document.createElement("span");
+      segment.className = "progress-segment";
+      if (index < activeSegments) segment.classList.add("is-active");
+      fragment.append(segment);
+    }
+
+    segments.replaceChildren(fragment);
+  }
+}
+
+function hydrateMemoryPixels(screen, litCount) {
+  const field = document.createElement("div");
+  field.className = "memory-pixel-field";
+  field.setAttribute("aria-hidden", "true");
+
+  for (let index = 0; index < totalQuestions; index += 1) {
+    const pixel = document.createElement("span");
+    pixel.className = "memory-pixel";
+    if (index < litCount) pixel.classList.add("is-lit");
+    field.append(pixel);
+  }
+
+  screen.prepend(field);
 }
 
 function swapScreen(screen) {
